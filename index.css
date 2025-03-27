@@ -86,6 +86,10 @@ h1{
     font-size: 20px;
 }
 
+.title-container{
+    text-align: center;
+}
+
 .item-container{
     display: flex;
     justify-content: space-between;
@@ -109,5 +113,9 @@ h1{
     color: white;
     font-size: 16px;
     font-weight: 700;
+}
+
+.hidden{
+    display: none;
 }
 
