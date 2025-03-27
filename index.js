@@ -17,15 +17,19 @@ function buildMenuHtmlString(){
         menuArr.push(
             `
             <div class="item">
-                <div class="img-container"> 
-                    <p class="item-image">${item.emoji}</p>
+                <div class="box">
+                    <div class="img-container"> 
+                        <p class="item-image">${item.emoji}</p>
+                    </div>
+                    <div class="item-desc">
+                        <p class="item-title">${item.name}</p>
+                        <p class="item-description">${item.ingredients}</p>
+                        <p class="item-price">$${item.price}</p>
+                    </div>
                 </div>
-                <div class="item-desc">
-                    <p class="item-title">${item.name}</p>
-                    <p class="item-description">${item.ingredients}</p>
-                    <p class="item-price">$${item.price}</p>
+                <div class="button-container">
+                    <button class="add-btn" data-item="${item.name}">+</button> 
                 </div>
-                <button class="add-btn" data-item="${item.name}">+</button> 
             </div>
             `
         )
@@ -42,6 +46,7 @@ document.addEventListener("click", function(e){
 
 function buildCartString(item){
     //if user clicks pizza button, pizza gets added to the cart.
+    const cartString = []
     if (item === "Pizza"){
         console.log("User ordered pizza")
     } else if (item === "Hamburger"){
@@ -49,6 +54,10 @@ function buildCartString(item){
     } else if (item === "Beer"){
         console.log("User ordered beer")
     }
+
+    `
+  
+    `
 }
     
 

@@ -30,8 +30,14 @@ h1{
     /* border: 2px solid blue; */
     display: flex;
     border-bottom: 1px solid #d2d2d2;
+    justify-content: space-between;
+    align-items: center;
     
 }
+.box{
+    display: flex;
+}
+
 .item-desc{
     /* border: black 1px solid; */
     display: flex;
@@ -74,16 +80,34 @@ h1{
 
 /* Checkout styling */
 .checkout{
+    /* border: 1px solid black; */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    font-size: 20px;
 }
 
-.checkout h1{
-    margin: 0 auto;
-}
-
-.summary{
+.item-container{
     display: flex;
     justify-content: space-between;
 }
+
+.total-container{
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid black;
+}
+
+.remove-btn{
+    background: none;
+    border: none;
+    color: #bbbbbb;
+}
+.complete-order-btn{
+    background-color: #16DB99;
+    border: none;
+    height: 60px;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+}
+
