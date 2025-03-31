@@ -90,7 +90,7 @@ h1{
     text-align: center;
 }
 
-.item-container{
+.pizza-container, .hamburger-container, .beer-container{
     display: flex;
     justify-content: space-between;
 }
@@ -102,11 +102,12 @@ h1{
 }
 
 .remove-btn{
+    /* display: inline-block; */
     background: none;
     border: none;
     color: #bbbbbb;
 }
-.complete-order-btn{
+.complete-order-btn, #submit-btn{
     background-color: #16DB99;
     border: none;
     height: 60px;
@@ -119,3 +120,75 @@ h1{
     display: none;
 }
 
+.item-quantity{
+    display: flex;
+    gap: 5px;
+    
+}
+
+/* Modal - card details */
+.modal-container{
+    /* Cover entire screen and stay on top */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+    
+    /* Center modal */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    
+    z-index: 1000; /* High value to stay on top */
+
+}
+
+.modal{
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+
+}
+
+#submit-btn{
+    display: block;
+    margin: 20 auto;
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    margin-top: 10px;
+    height: 70px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+input::placeholder{
+    font-size: 20px;
+    padding: 10px;
+}
+
+.order-completed{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.message{
+    border: none;
+    background-color: #ECFDF5;
+    color: #065F46;
+    font-size: 32px;
+    font-weight: 400;
+}

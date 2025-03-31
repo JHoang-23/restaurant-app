@@ -2,26 +2,30 @@ import menuArray from '/data.js'
 const userCart = []
 
 
-
-// name: "Pizza",
-// ingredients: ["pepperoni", "mushrom", "mozarella"],
-// id: 0,
-// price: 14,
-// emoji: "🍕"
-
-
-
-
-
 document.addEventListener("click", function(e){
-    console.log(e.target)
+    // console.log(e.target)
     // console.log(e.target.dataset.item)
     // console.log(e.target.dataset.price)
-    buildCartString(e.target.dataset.item, e.target.dataset.price)
+    if (e.target.dataset.item){
+        console.log("calling buildCheckout")
+        buildCheckout(e.target.dataset.item)
+    } 
+    else if (e.target.dataset.rel){
+        // console.log(e.target.parentNode.dataset.removeitem)
+        console.log(e.target.dataset.rel)
+        removeItem(e.target.dataset.rel)
+    } else if (e.target === document.querySelector(".complete-order-btn")){
+        completeOrder()
+    }
+    //  else if (e.target === document.querySelector(".submit-btn")){
+    //     payButtonClicked()
+    // }
+    
+    
 })
 
 
-
+//Build the HTML string for the initial menu
 function buildMenuHtmlString(){
     const menuArr = []
     menuArray.forEach(function (item){
@@ -52,118 +56,154 @@ function buildMenuHtmlString(){
 
 
 const main = document.querySelector(".options")
-function renderMain(htmlString){
-    //get the options section
-    //add a div for each item
-    main.innerHTML = htmlString
 
+function renderMain(htmlString){
+    main.innerHTML = htmlString
 }
 
+//initially hide the checkout section
 const checkoutSection = document.querySelector(".checkout")
 checkoutSection.classList.add("hidden")
 
+
+
+const pizzaContainer = document.querySelector(".pizza-container")
+const hamburgerContainer = document.querySelector(".hamburger-container")
+const beerContainer = document.querySelector(".beer-container")
+
 const cartItems = {
-    Pizza: {count: 0, price: 14},
-    Hamburger: {count: 0, price: 12},
-    Beer: {count: 0, price: 12}
+    Pizza: {count: 0, price: 14, container: pizzaContainer},
+    Hamburger: {count: 0, price: 12, container: hamburgerContainer},
+    Beer: {count: 0, price: 12, container: beerContainer}
 }
 
-let cartShown = false;
-let totalPrice = 0;
 
-
-
-function buildCartString(item, price){
-
-    if (!cartShown){
-        checkoutSection.classList.remove("hidden")
-        cartShown = true;
-
-        const totalContainer = document.createElement("div")
-        totalContainer.classList.add("total-container")
-        totalContainer.innerHTML = `
-                <p class="total-price-txt">Total price:</p>
-                <p class="total-price">$0</p>
-        `
-
-        const completeBtn = document.createElement("button")
-        completeBtn.classList.add("complete-order-btn")
-        completeBtn.textContent = "Complete order"
-
-        checkoutSection.appendChild(totalContainer)
-        checkoutSection.appendChild(completeBtn)
- 
-
-    }
-
-    if (cartItems[item].count === 0){
-        const itemContainer = document.createElement("div")
-        itemContainer.classList.add("item-container")
-        itemContainer.id = `container-${item}`
-        itemContainer.innerHTML = `
-            <p class="order-item" id="order-${item}">${item} x1
-            <button class="remove-btn" onclick="removeItem('${item}')">remove</button>
-            </p>
-            <p class="price" id="price-${item}">$${price}</p>
-        `
-
-        checkoutSection.insertBefore(itemContainer, document.querySelector(".total-container"))
-    }
-
-    cartItems[item].count++
-    totalPrice += Number(price)
-
-    updateItem(item)
-    updateTotal()
+let displayCheckout = false
+function buildCheckout(item){
+    //initially all items have 0 count.
+    if (!displayCheckout || cartItems[item].count === 0){
+        console.log("Being called")
+        cartItems[item].count ++ //Increment count of the item chosen
+        updateTotal()//calculate new total
     
-
+        for (let key in cartItems){ //for each item in the cart 
+            let item = cartItems[key] //get the object
+            if (item.count > 0){ //if its count is greater than 0
+                item.container.classList.remove("hidden") //unhide it's html
+                displayCheckout = true
+            }
+        }
     
+        if (displayCheckout === true){
+            checkoutSection.classList.remove("hidden")
+        }
+    }
+    else{ //item/items are already displayed
+        cartItems[item].count ++
+        console.log("calling updateItemText")
+        updateItemText(item)
+        updateTotal()
+
+    }
+
 }
 
-function updateItem(item){
-    switch (item){
-        case "Pizza":
-            updatePizza()
-            break;
-        case "Beer":
-            updateBeer()
-            break;
-        case "Hamburger":
-            updateBurger()
-            break;
 
+
+function updateItemText(item){
+    console.log("item is pizza")
+    if (item === "Pizza"){
+        if (cartItems[item].count === 0){
+            cartItems[item].container.classList.add("hidden")
+        }
+        else{
+            document.querySelector(".pizza-quantity").textContent = `x${cartItems[item].count}`
+            document.querySelector(".pizza-total").textContent = `$${cartItems[item].count * cartItems[item].price}`
+        } 
+    }
+
+    else if (item === "Hamburger"){
+        if (cartItems[item].count === 0){
+            cartItems[item].container.classList.add("hidden")
+        }
+        else{
+            document.querySelector(".hamburger-quantity").textContent = `x${cartItems[item].count}`
+            document.querySelector(".hamburger-total").textContent = `$${cartItems[item].count * cartItems[item].price}`
+        }
+
+    }
+
+    else if (item === "Beer"){
+        if (cartItems[item].count === 0){
+            cartItems[item].container.classList.add("hidden")
+        } 
+        else{
+            document.querySelector(".beer-quantity").textContent = `x${cartItems[item].count}`
+            document.querySelector(".beer-total").textContent = `$${cartItems[item].count * cartItems[item].price}`
+        }
+    }
+
+    if (isEmptyCart()){
+        checkoutSection.classList.add("hidden")
     }
 }
 
-function updatePizza() {
-    console.log(cartItems.Pizza.count)
-    document.getElementById("order-Pizza").innerHTML = `Pizza x${cartItems.Pizza.count} 
-        <button class="remove-btn" onclick="removeItem('Pizza')">remove</button>`;
-    document.getElementById("price-Pizza").textContent = `$${cartItems.Pizza.count * cartItems.Pizza.price}`;
-}
+function isEmptyCart(){
+    let total = 0
+    for (const item of Object.values(cartItems)){
+        total += item.count
+    }
 
-
-function updateBurger(){
-    document.getElementById("order-Hamburger").innerHTML = `Burger x${cartItems.Hamburger.count}
-    <button class="remove-btn" onclick="removeItem('Burger')">remove</button>`
-    document.getElementById("price-Hamburger").textContent = `$${cartItems.Hamburger.count * cartItems.Hamburger.price}`
-    console.log("updated burger")
-}
-
-function updateBeer(){
-    document.getElementById("order-Beer").innerHTML = `Beer x${cartItems.Beer.count}
-    <button class="remove-btn" onclick="removeItem('Beer')">remove</button>`
-    document.getElementById("price-Beer").textContent = `$${cartItems.Beer.count * cartItems.Beer.price}`
-    console.log("Updated beer")
-
+    return (total === 0)
 }
 
 function updateTotal(){
-    // console.log("stuck here")
-    document.querySelector(".total-price").textContent = `$${totalPrice}`
-    // console.log("Found total price")
+    let total = 0
+    for (const item of Object.values(cartItems)){
+        total += item.count * item.price
+    }
+    console.log(total)
+    document.querySelector(".total-price").textContent = `$${total}`
 }
 
+function removeItem(item){
+    console.log("item is :" + item)
+    cartItems[item].count --
+    updateItemText(item)
+    updateTotal()
+}
+
+
+
+function completeOrder(){
+    //unhide modal
+    document.querySelector(".modal-container").style.display = 'flex'
+}
+
+function payButtonClicked(orderName){
+    //hide modal
+    //update basket text
+    
+    console.log("pay clicked")
+    document.querySelector(".modal-container").style.display = 'none'
+    checkoutSection.innerHTML = 
+    `
+    <div class="order-completed">
+        <div class="message">
+        <p>Thanks ${orderName}, Your order is on its way!</p>
+        </div>
+    </div>
+    `
+}
+
+const paymentForm = document.getElementById('payment-form')
+
+paymentForm.addEventListener('submit', function(e){
+    e.preventDefault()
+    const paymentFormData = new FormData(paymentForm)
+    const orderName =  paymentFormData.get('name')
+    payButtonClicked(orderName)
+})
 
 
 renderMain(buildMenuHtmlString())

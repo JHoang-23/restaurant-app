@@ -24,23 +24,68 @@
              </section>
 
              <section class="checkout" id="checkout">
+                <!-- Render basket here -->
                 <div class="title-container">
                     <h1>Your order</h1>
                 </div>
-                
-                
-                <!-- checkout summary here -->
-                 <!-- <button class="complete-order-btn">Complete order</button> -->
 
+                <div class="pizza-container hidden">
+                    <div class="item-quantity">
+                        <p class="pizza-item">Pizza</p>
+                        <p class="pizza-quantity">x1</p>
+                        <button class="remove-btn" data-rel = "Pizza">remove</button>
+                    </div>
+                    <p class="pizza-total">$12</p>
+                </div>
+
+                <div class="hamburger-container hidden">
+                    <div class="item-quantity">
+                        <p class="hamburger-item">Hamburger</p>
+                        <p class="hamburger-quantity">x1</p>
+                        <button class="remove-btn" data-rel = "Hamburger">remove</button>
+                    </div>
+                    <p class="hamburger-total">$12</p>
+                </div>
+
+                <div class="beer-container hidden">
+                    <div class="item-quantity">
+                        <p class="beer-item">Beer</p>
+                        <p class="beer-quantity">x1</p>
+                        <button class="remove-btn" data-rel = "Beer">remove</button>
+                    </div>
+                    <p class="beer-total">$12</p>
+                </div>
+
+                <div class="total-container">
+                    <p class="total-text">Total Price:</p>
+                    <p class="total-price">$total</p>
+                </div>
+
+                <button class="complete-order-btn">Complete Order</button>
              </section>
+
+
+
+
+
+             <section class="modal-container">
+                <div class="modal">
+                    <h1>Enter card details</h1>
+                    <form id = "payment-form">
+                        <input type="text" id="name" name="name" 
+                        placeholder = "Enter your name" required>
+                        <input type="number" id= "card-num" 
+                        placeholder = "Enter card number" required>
+                        <input type="number" id="cvv"
+                        placeholder = "Enter CVV" minlength="3" maxlength="4" required>
+                        <button type="submit" id="submit-btn">Pay</button>
+                    </form>
+                </div>
+            </section>
         </main>
 
-
-
-
-
     </div> 
-    
+
 
 	<script src="index.js" type=module></script>
     </body>
